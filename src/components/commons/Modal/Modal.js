@@ -16,6 +16,7 @@ const Modal = ({ children, isOpen, setIsModalOpen }) => {
     <ModalFade isOpen={isOpen}>
       <div className={s.modal} onClick={handleCloseModal}>
         <div className={s.modalContent} onClick={contentClick}>
+          <h2 className={s.title}>title</h2>
           {children}
         </div>
       </div>

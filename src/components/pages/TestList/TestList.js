@@ -1,9 +1,7 @@
-// import { useEffect, useState } from 'react';
-// import clsx from 'clsx';
 import s from './TestList.module.scss';
 
-const HomePage = () => {
+const TestList = () => {
   return <div className={s.s}></div>;
 };
 
-export default HomePage;
+export default TestList;
