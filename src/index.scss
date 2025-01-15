@@ -1,6 +1,7 @@
 @import './styles/breakpoints.scss';
 @import './styles/colors.scss';
 @import './styles/mixins.scss';
+@import './styles/icons.scss';
 
 *,
 *::before,
@@ -30,6 +31,11 @@ h6 {
   font-weight: inherit;
   font-size: inherit;
 }
+
+html {
+  overflow-y: scroll;
+}
+
 html,
 body {
   height: 100%;
@@ -41,6 +47,19 @@ body {
   background: $bgColor;
 }
 
+body.modalOpen {
+  overflow: hidden;
+}
+
 #root {
   height: 100%;
+}
+
+._container {
+  padding: 0px 80px;
+  margin: 0 auto;
+
+  @include respondMedium {
+    padding: 0px 40px;
+  }
 }

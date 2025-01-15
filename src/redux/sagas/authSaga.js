@@ -67,7 +67,7 @@ function* registerSaga(action) {
   }
 }
 
-export function* authSaga() {
+export default function* authSaga() {
   yield takeLatest(loginRequest.type, loginSaga);
   yield takeLatest(logoutRequest.type, logoutSaga);
   yield takeLatest(registerRequest.type, registerSaga);

@@ -9,7 +9,7 @@ const ModalFade = ({ children, isOpen }) => {
   return (
     <CSSTransition
       in={isOpen}
-      timeout={200}
+      timeout={400}
       classNames={{
         enter: s['fade-enter'],
         enterActive: s['fade-enter-active'],
@@ -19,7 +19,9 @@ const ModalFade = ({ children, isOpen }) => {
       unmountOnExit
       nodeRef={nodeRef}
     >
-      <div ref={nodeRef}>{children}</div>
+      <div className={s.wrap} ref={nodeRef}>
+        {children}
+      </div>
     </CSSTransition>
   );
 };

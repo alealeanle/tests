@@ -2,10 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { Provider } from 'react-redux';
+import ProtectedRoute from '@utils/ProtectedRoute';
 import store from './redux/store';
 import AuthPage from '@pages/AuthPage';
-import TestList from '@pages/TestList';
+import TestListPage from '@TestListPage';
 import SuccessRegistrationPage from '@pages/SuccessRegistrationPage';
+import EditPage from '@EditPage';
+import TestPassingPage from '@TestPassingPage';
 import ErrorPage from '@pages/ErrorPage';
 import './index.scss';
 
@@ -25,7 +28,35 @@ const router = createBrowserRouter([
   },
   {
     path: '/tests',
-    element: <TestList />,
+    element: (
+      <ProtectedRoute admin={false}>
+        <TestListPage />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '/create_test',
+    element: (
+      <ProtectedRoute admin={true}>
+        <EditPage />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '/edit_test/:testId',
+    element: (
+      <ProtectedRoute admin={true}>
+        <EditPage />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '/passing_test/:testId',
+    element: (
+      <ProtectedRoute admin={false}>
+        <TestPassingPage />
+      </ProtectedRoute>
+    ),
   },
 ]);
 

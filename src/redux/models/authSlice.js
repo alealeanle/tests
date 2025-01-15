@@ -15,43 +15,49 @@ const authSlice = createSlice({
   reducers: {
     loginRequest: state => {
       state.error = null;
+      state.loading = true;
     },
     loginSuccess: (state, action) => {
-      state.isAuthenticated = true;
       state.user = action.payload.user;
       state.isAdmin = action.payload.is_admin;
+      state.isAuthenticated = true;
     },
     loginFailure: (state, action) => {
       state.error = action.payload;
+      state.loading = false;
     },
     fetchUserSuccess: (state, action) => {
       state.user = action.payload;
       state.isAuthenticated = true;
+      state.loading = false;
     },
     fetchUserFailure: (state, action) => {
       state.error = action.payload;
+      state.loading = false;
     },
     logoutRequest: state => {
-      state.loading = true;
       state.error = null;
+      state.loading = true;
     },
     logoutSuccess: state => {
       state.isAuthenticated = false;
       state.user = null;
       state.isAdmin = false;
       state.loading = false;
-      localStorage.removeItem('scope-key');
+      // localStorage.removeItem('scope-key');
     },
     logoutFailure: (state, action) => {
-      state.loading = false;
       state.error = action.payload;
+      state.loading = false;
     },
     registerRequest: state => {
       state.error = null;
       state.registrationSuccess = false;
+      state.loading = true;
     },
     registerSuccess: state => {
       state.registrationSuccess = true;
+      state.loading = false;
     },
     registerEnd: state => {
       state.registrationSuccess = false;
@@ -59,6 +65,7 @@ const authSlice = createSlice({
     registerFailure: (state, action) => {
       state.error = action.payload;
       state.registrationSuccess = false;
+      state.loading = false;
     },
   },
 });

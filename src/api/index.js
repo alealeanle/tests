@@ -1,5 +1,4 @@
 import axios from 'axios';
-axios.defaults.withCredentials = true;
 
 const BASE_URL = 'https://interns-test-fe.snp.agency/api/v1';
 
@@ -14,6 +13,7 @@ const getScopeKey = () => {
 
 const api = axios.create({
   baseURL: BASE_URL,
+  withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
     'scope-key': getScopeKey(),
