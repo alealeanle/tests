@@ -27,6 +27,7 @@ export function* editQuestionSaga(initialQuestion, question) {
     const isAnswerChanged =
       question.question_type === 'number' &&
       question.answer !== initialQuestion.answer;
+
     if (isQuestionTypeChanged || isTitleChanged || isAnswerChanged) {
       if (question.question_type === 'number') {
         yield call(api.patch, `/questions/${question.id}`, {
@@ -60,6 +61,24 @@ export function* editAnswerSaga(initialAnswer, answer) {
       answer.is_right !== initialAnswer.is_right
     ) {
       yield call(api.patch, `/answers/${answer.id}`, {
+        text: answer.text,
+        is_right: answer.is_right,
+      });
+      yield put(editAnswerSuccess(answer));
+    }
+  } catch (error) {
+    console.error(`Ошибка редактирования ответа: ${error.message}`);
+    throw error;
+  }
+}
+
+export function* changePositionAnswerSaga(initialAnswer, answer) {
+  try {
+    if (
+      answer.text !== initialAnswer.text ||
+      answer.is_right !== initialAnswer.is_right
+    ) {
+      yield call(api.patch, `/answers/${initialAnswer.id}`, {
         text: answer.text,
         is_right: answer.is_right,
       });

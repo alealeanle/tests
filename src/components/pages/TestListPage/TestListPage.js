@@ -118,7 +118,7 @@ const TestListPage = () => {
     setTimeout(() => {
       setModalContent(null);
       setSelectedTest(null);
-    }, 250);
+    }, 300);
   };
 
   const renderPagination = () => {
@@ -181,20 +181,24 @@ const TestListPage = () => {
     <div className={clsx(s.root, s._container)}>
       <Header />
       <div className={s.testListBody}>
-        <div className={s.firstRow}>
-          <button
-            className={clsx(s.btn, s.createTest)}
-            onClick={handleCreateTest}
-          >
-            Создать
-          </button>
+        <div className={clsx(s.firstRow, { [s.firstRowForUser]: !isAdmin })}>
+          {isAdmin && (
+            <button
+              className={clsx(s.btn, s.createTest)}
+              onClick={handleCreateTest}
+            >
+              Создать
+            </button>
+          )}
           <input
             type="text"
             placeholder="Поиск"
             value={filterText}
             autoFocus
             onChange={handleFilterChange}
-            className={s.filterInput}
+            className={clsx(s.filterInput, {
+              [s.filterInputForUser]: !isAdmin,
+            })}
           />
         </div>
         {loading ? (
@@ -203,8 +207,14 @@ const TestListPage = () => {
           <div className={s.error} style={{ color: 'red' }}>
             Ошибка: {error}
           </div>
-        ) : !tests ? (
-          <div className={s.emptyList}>Список пуст</div>
+        ) : !tests || tests.length === 0 ? (
+          filterText ? (
+            <div className={s.emptyList}>
+              По введенному поисковому запросу ничего не найдено
+            </div>
+          ) : (
+            <div className={s.emptyList}>Список пуст</div>
+          )
         ) : (
           <>
             <div className={s.sort} onClick={handleSortChange}>

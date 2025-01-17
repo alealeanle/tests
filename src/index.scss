@@ -49,6 +49,8 @@ body {
 
 body.modalOpen {
   overflow: hidden;
+  position: fixed;
+  width: 100%;
 }
 
 #root {

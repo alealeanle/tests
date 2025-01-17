@@ -45,12 +45,13 @@ const TestForm = ({ testId, initialTestTitle, setInitialTestTitle }) => {
   useEffect(() => {
     if (testId && test) {
       setNewTestTitle(test.title || '');
-      if (test.questions) {
-        addKeysForQuestionsAndAnswers(test, setQuestions);
-      }
-
       setInitialTestTitle(test.title);
-      setInitialQuestions(test.questions || []);
+
+      if (test.questions) {
+        const updatedQuestions = addKeysForQuestionsAndAnswers(test);
+        setQuestions(updatedQuestions);
+        setInitialQuestions(updatedQuestions || []);
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [test, testId]);
@@ -148,7 +149,7 @@ const TestForm = ({ testId, initialTestTitle, setInitialTestTitle }) => {
     setShowModal(false);
     setTimeout(() => {
       setModalType(null);
-    }, 250);
+    }, 300);
   };
 
   return loading ? (

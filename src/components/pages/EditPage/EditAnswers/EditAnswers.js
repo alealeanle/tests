@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
+import { Reorder } from 'framer-motion';
 import { memo, useCallback, useState } from 'react';
 import { useTestQuestions } from '@hooks/useTestQuestions';
 import Modal from '@commons/Modal';
@@ -93,7 +94,7 @@ const EditAnswers = ({
     setTimeout(() => {
       setDeleteType(null);
       setDeletedItem(null);
-    }, 200);
+    }, 300);
   }, []);
 
   if (question.question_type === 'number') {
@@ -157,10 +158,33 @@ const EditAnswers = ({
     );
   }
 
+  const setReorderAnswers = newOrder => {
+    const questionIndex = questions.findIndex(q => q.key === question.key);
+    if (questionIndex === -1) return;
+
+    const updatedQuestions = [...questions];
+    updatedQuestions[questionIndex] = {
+      ...questions[questionIndex],
+      answers: newOrder,
+    };
+    setQuestions(updatedQuestions);
+  };
+
   return (
-    <div className={s.root}>
+    <Reorder.Group
+      axys="y"
+      values={question.answers}
+      onReorder={setReorderAnswers}
+      className={s.root}
+    >
       {question.answers.map(answer => (
-        <div key={answer.key} className={s.answer}>
+        <Reorder.Item
+          value={answer}
+          key={answer.key}
+          className={s.answer}
+          layout
+          dragConstraints={{ top: 0, bottom: 0 }}
+        >
           <button
             type="button"
             className={clsx('icon-delete', s.deleteBtn)}
@@ -199,7 +223,7 @@ const EditAnswers = ({
               <label className={s.checkboxLabel2} />
             )}
           </div>
-        </div>
+        </Reorder.Item>
       ))}
       <div className={s.footer}>
         <button
@@ -259,7 +283,7 @@ const EditAnswers = ({
           </button>
         </div>
       </Modal>
-    </div>
+    </Reorder.Group>
   );
 };
 

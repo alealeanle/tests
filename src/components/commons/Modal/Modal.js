@@ -1,19 +1,31 @@
-import { memo, useEffect } from 'react';
+import { memo, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import useEscapeKey from '@hooks/useEscapeKey';
 import ModalFade from './ModalFade';
 import s from './Modal.module.scss';
 
 const Modal = ({ title, children, isOpen, setIsModalOpen, setOther }) => {
+  const scrollPosition = useRef(0);
+
   useEffect(() => {
     if (isOpen) {
+      scrollPosition.current = window.scrollY;
+      const pageHeight = `${document.documentElement.scrollHeight}px`;
+
       document.body.classList.add('modalOpen');
+      document.body.style.top = `-${scrollPosition.current}px`;
+      document.body.style.height = pageHeight;
     } else {
       document.body.classList.remove('modalOpen');
+      document.body.style.top = '';
+      document.body.style.height = '';
+      window.scrollTo(0, scrollPosition.current);
     }
 
     return () => {
       document.body.classList.remove('modalOpen');
+      document.body.style.top = '';
+      document.body.style.height = '';
     };
   }, [isOpen]);
 

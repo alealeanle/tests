@@ -202,17 +202,15 @@ export const useTestQuestions = () => {
     }
   };
 
-  const addKeysForQuestionsAndAnswers = (test, setQuestions) => {
-    setQuestions(
-      test.questions.map(question => ({
-        ...question,
-        key: uuidv4(),
-        answers:
-          question.question_type !== 'number'
-            ? question.answers.map(answer => ({ ...answer, key: uuidv4() }))
-            : [],
-      })),
-    );
+  const addKeysForQuestionsAndAnswers = test => {
+    return test.questions.map(question => ({
+      ...question,
+      key: uuidv4(),
+      answers:
+        question.question_type !== 'number'
+          ? question.answers.map(answer => ({ ...answer, key: uuidv4() }))
+          : [],
+    }));
   };
 
   return {

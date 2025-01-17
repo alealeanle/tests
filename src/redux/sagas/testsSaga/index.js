@@ -3,9 +3,15 @@ import api from '@api';
 import { addNewTestSaga, addQuestionSaga, addAnswerSaga } from './addSaga';
 import {
   editCurrentTestSaga,
-  editAnswerSaga,
   editQuestionSaga,
+  editAnswerSaga,
+  changePositionAnswerSaga,
 } from './editSaga';
+import {
+  deleteAnswerSaga,
+  deleteCurrentTestSaga,
+  deleteQuestionSaga,
+} from './deleteSaga';
 import {
   fetchTestsRequest,
   fetchTestsSuccess,
@@ -20,11 +26,6 @@ import {
   deleteTestRequest,
   deleteTestFailure,
 } from '@models/testsSlice';
-import {
-  deleteAnswerSaga,
-  deleteCurrentTestSaga,
-  deleteQuestionSaga,
-} from './deleteSaga';
 
 function* fetchTestsSaga(action) {
   try {
@@ -78,21 +79,29 @@ function* editTestSaga(action) {
         yield call(editQuestionSaga, initialQuestion, question);
 
         if (initialQuestion && question.question_type !== 'number') {
-          for (const answer of answers) {
-            const initialAnswer = initialQuestion.answers.find(
-              a => a.id === answer.id,
-            );
+          const maxLength = Math.max(
+            answers.length,
+            initialQuestion.answers.length,
+          );
 
-            if (initialAnswer) {
-              yield call(editAnswerSaga, initialAnswer, answer);
-            } else {
-              yield call(addAnswerSaga, question.id, answer);
-            }
-          }
+          for (let i = 0; i < maxLength; i++) {
+            const currentAnswer = answers[i];
+            const initialAnswer = initialQuestion.answers[i];
 
-          for (const initAnswer of initialQuestion.answers) {
-            if (!answers.find(a => a.id === initAnswer.id)) {
-              yield call(deleteAnswerSaga, initAnswer);
+            if (currentAnswer && initialAnswer) {
+              if (currentAnswer.key !== initialAnswer.key) {
+                yield call(
+                  changePositionAnswerSaga,
+                  initialAnswer,
+                  currentAnswer,
+                );
+              } else if (initialAnswer) {
+                yield call(editAnswerSaga, initialAnswer, currentAnswer);
+              }
+            } else if (currentAnswer && !initialAnswer) {
+              yield call(addAnswerSaga, question.id, currentAnswer);
+            } else if (!currentAnswer && initialAnswer) {
+              yield call(deleteAnswerSaga, initialAnswer);
             }
           }
         } else if (initialQuestion.answers.length && answers) {
