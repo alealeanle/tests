@@ -7,9 +7,7 @@ import s from './AuthPage.module.scss';
 
 const AuthPage = () => {
   const dispatch = useDispatch();
-  const { isAuthenticated, registrationSuccess } = useSelector(
-    state => state.auth,
-  );
+  const { registrationSuccess } = useSelector(state => state.auth);
   const location = useLocation();
   const isRegisterPage = location.pathname === '/signup';
   const navigate = useNavigate();
@@ -72,10 +70,6 @@ const AuthPage = () => {
       is_admin: false,
     });
   }, [isRegisterPage]);
-
-  useEffect(() => {
-    if (isAuthenticated) navigate('/tests');
-  }, [isAuthenticated]);
 
   useEffect(() => {
     if (registrationSuccess) navigate('/registrationSuccess');
@@ -146,8 +140,11 @@ const AuthPage = () => {
                   checked={formData.is_admin}
                   type="checkbox"
                 />
-                <label htmlFor="is_admin" className={s.checkboxLabel}></label>
-                <label htmlFor="is_admin" className={s.checkboxLabel2}></label>
+                <label
+                  htmlFor="is_admin"
+                  className={s.checkboxCheckMark}
+                ></label>
+                <label htmlFor="is_admin" className={s.checkboxFrame}></label>
               </div>
               <label htmlFor="is_admin" className={s.label}>
                 Администратор
@@ -165,8 +162,8 @@ const AuthPage = () => {
               checked={showPassword}
               type="checkbox"
             />
-            <label htmlFor="show_pass" className={s.checkboxLabel}></label>
-            <label htmlFor="show_pass" className={s.checkboxLabel2}></label>
+            <label htmlFor="show_pass" className={s.checkboxCheckMark}></label>
+            <label htmlFor="show_pass" className={s.checkboxFrame}></label>
           </div>
           <label htmlFor="show_pass" className={s.label}>
             Показать пароль

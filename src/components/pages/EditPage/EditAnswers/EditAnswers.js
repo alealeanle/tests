@@ -171,60 +171,102 @@ const EditAnswers = ({
   };
 
   return (
-    <Reorder.Group
-      axys="y"
-      values={question.answers}
-      onReorder={setReorderAnswers}
-      className={s.root}
-    >
-      {question.answers.map(answer => (
-        <Reorder.Item
-          value={answer}
-          key={answer.key}
-          className={s.answer}
-          layout
-          dragConstraints={{ top: 0, bottom: 0 }}
-        >
-          <button
-            type="button"
-            className={clsx('icon-delete', s.deleteBtn)}
-            onClick={() => {
-              setDeletedItem(answer);
-              setDeleteType('answer');
-              setShowDeleteModal(true);
-            }}
-          />
-          <input
-            type="text"
-            className={s.input}
-            placeholder="Введите текст ответа"
-            value={answer.text}
-            onChange={e => handleAnswerChange(answer, 'text', e.target.value)}
-          />
-          <div className={s.isRightWrap}>
+    <>
+      <Reorder.Group
+        axys="y"
+        values={question.answers}
+        onReorder={setReorderAnswers}
+        className={s.root}
+      >
+        {question.answers.map(answer => (
+          <Reorder.Item
+            value={answer}
+            key={answer.key}
+            className={s.answer}
+            layout
+            dragConstraints={{ top: 0, bottom: 0 }}
+          >
+            <button
+              type="button"
+              className={clsx('icon-delete', s.deleteBtn)}
+              onClick={() => {
+                setDeletedItem(answer);
+                setDeleteType('answer');
+                setShowDeleteModal(true);
+              }}
+            />
             <input
-              type={question.question_type === 'single' ? 'radio' : 'checkbox'}
-              className={clsx({
-                [s.radio]: question.question_type === 'single',
-                [s.checkbox]: question.question_type === 'multiple',
-              })}
-              checked={answer.is_right}
-              onChange={e =>
-                handleAnswerChange(answer, 'is_right', e.target.checked)
-              }
+              type="text"
+              className={s.input}
+              placeholder="Введите текст ответа"
+              value={answer.text}
+              onChange={e => handleAnswerChange(answer, 'text', e.target.value)}
             />
-            <label
-              className={clsx({
-                [s.radioLabel]: question.question_type === 'single',
-                [s.checkboxLabel]: question.question_type === 'multiple',
-              })}
-            />
-            {question.question_type === 'multiple' && (
-              <label className={s.checkboxLabel2} />
-            )}
+            <div className={s.isRightWrap}>
+              <input
+                type={
+                  question.question_type === 'single' ? 'radio' : 'checkbox'
+                }
+                className={clsx({
+                  [s.radiobutton]: question.question_type === 'single',
+                  [s.checkbox]: question.question_type === 'multiple',
+                })}
+                checked={answer.is_right}
+                onChange={e =>
+                  handleAnswerChange(answer, 'is_right', e.target.checked)
+                }
+              />
+              <label
+                className={clsx({
+                  [s.isRight]: question.question_type === 'single',
+                  [s.checkboxCheckMark]: question.question_type === 'multiple',
+                })}
+              />
+              {question.question_type === 'multiple' && (
+                <label className={s.checkboxFrame} />
+              )}
+            </div>
+          </Reorder.Item>
+        ))}
+
+        <Modal
+          title={'Подтверждение действия'}
+          isOpen={showDeleteModal}
+          setIsModalOpen={setShowDeleteModal}
+          setOther={resetDeleteStates}
+        >
+          <div className={s.modalDeleteText}>
+            {deleteType === 'question'
+              ? `Удалить вопрос ${deletedItem?.title && `'${deletedItem?.title}'`}?`
+              : `Удалить ответ ${deletedItem?.text && `'${deletedItem?.text}'`}?`}
           </div>
-        </Reorder.Item>
-      ))}
+          <div className={s.modalBtnsWrap}>
+            <button
+              type="button"
+              className={clsx(s.btn, s.modalDeleteBtn)}
+              onClick={
+                deleteType === 'question'
+                  ? handleRemoveQuestion
+                  : deleteType === 'answer'
+                    ? handleRemoveAnswer
+                    : null
+              }
+            >
+              Удалить
+            </button>
+            <button
+              type="button"
+              className={s.btn}
+              onClick={() => {
+                setShowDeleteModal(false);
+                resetDeleteStates();
+              }}
+            >
+              Отмена
+            </button>
+          </div>
+        </Modal>
+      </Reorder.Group>
       <div className={s.footer}>
         <button
           type="button"
@@ -245,51 +287,27 @@ const EditAnswers = ({
           Удалить вопрос
         </button>
       </div>
-
-      <Modal
-        title={'Подтверждение действия'}
-        isOpen={showDeleteModal}
-        setIsModalOpen={setShowDeleteModal}
-        setOther={resetDeleteStates}
-      >
-        <div className={s.modalDeleteText}>
-          {deleteType === 'question'
-            ? `Удалить вопрос ${deletedItem?.title && `'${deletedItem?.title}'`}?`
-            : `Удалить ответ ${deletedItem?.text && `'${deletedItem?.text}'`}?`}
-        </div>
-        <div className={s.modalBtnsWrap}>
-          <button
-            type="button"
-            className={clsx(s.btn, s.modalDeleteBtn)}
-            onClick={
-              deleteType === 'question'
-                ? handleRemoveQuestion
-                : deleteType === 'answer'
-                  ? handleRemoveAnswer
-                  : null
-            }
-          >
-            Удалить
-          </button>
-          <button
-            type="button"
-            className={s.btn}
-            onClick={() => {
-              setShowDeleteModal(false);
-              resetDeleteStates();
-            }}
-          >
-            Отмена
-          </button>
-        </div>
-      </Modal>
-    </Reorder.Group>
+    </>
   );
 };
 
 EditAnswers.propTypes = {
   testId: PropTypes.string,
-  question: PropTypes.object.isRequired,
+  question: PropTypes.shape({
+    id: PropTypes.number,
+    key: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    question_type: PropTypes.string.isRequired,
+    answer: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    answers: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.number,
+        key: PropTypes.string.isRequired,
+        text: PropTypes.string.isRequired,
+        is_right: PropTypes.bool.isRequired,
+      }),
+    ),
+  }).isRequired,
   questions: PropTypes.array.isRequired,
   setQuestions: PropTypes.func.isRequired,
   newQuestionsOfEdit: PropTypes.array,

@@ -95,8 +95,38 @@ const Question = ({
 };
 
 Question.propTypes = {
-  question: PropTypes.object.isRequired,
-  questions: PropTypes.array.isRequired,
+  question: PropTypes.PropTypes.shape({
+    id: PropTypes.number,
+    key: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    question_type: PropTypes.string.isRequired,
+    answer: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    answers: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.number,
+        key: PropTypes.string.isRequired,
+        text: PropTypes.string.isRequired,
+        is_right: PropTypes.bool.isRequired,
+      }),
+    ),
+  }).isRequired,
+  questions: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number,
+      key: PropTypes.string.isRequired,
+      title: PropTypes.string.isRequired,
+      question_type: PropTypes.string.isRequired,
+      answer: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      answers: PropTypes.arrayOf(
+        PropTypes.shape({
+          id: PropTypes.number,
+          key: PropTypes.string.isRequired,
+          text: PropTypes.string.isRequired,
+          is_right: PropTypes.bool.isRequired,
+        }),
+      ),
+    }).isRequired,
+  ).isRequired,
   setQuestions: PropTypes.func.isRequired,
   setShowDeleteModal: PropTypes.func.isRequired,
   setSelectedQuestion: PropTypes.func.isRequired,

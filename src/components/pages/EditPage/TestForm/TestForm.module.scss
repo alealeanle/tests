@@ -24,7 +24,7 @@
 }
 
 .input {
-  width: 81%;
+  width: 68vw;
   padding: 5px 10px;
   border: 1px solid $gray;
   border-radius: 5px;
@@ -138,6 +138,8 @@
 
   @include respondSmall {
     height: 40px;
+    width: 100px;
+    height: 35px;
   }
 }
 

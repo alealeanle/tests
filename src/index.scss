@@ -32,10 +32,6 @@ h6 {
   font-size: inherit;
 }
 
-html {
-  overflow-y: scroll;
-}
-
 html,
 body {
   height: 100%;
@@ -49,8 +45,6 @@ body {
 
 body.modalOpen {
   overflow: hidden;
-  position: fixed;
-  width: 100%;
 }
 
 #root {

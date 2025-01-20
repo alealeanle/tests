@@ -6,7 +6,7 @@ const initialState = {
   isAdmin: false,
   error: null,
   registrationSuccess: false,
-  loading: false,
+  loading: true,
 };
 
 const authSlice = createSlice({
@@ -21,14 +21,20 @@ const authSlice = createSlice({
       state.user = action.payload.user;
       state.isAdmin = action.payload.is_admin;
       state.isAuthenticated = true;
+      state.loading = false;
     },
     loginFailure: (state, action) => {
       state.error = action.payload;
       state.loading = false;
     },
+    fetchUserRequest: state => {
+      state.error = null;
+      state.loading = true;
+    },
     fetchUserSuccess: (state, action) => {
       state.user = action.payload;
       state.isAuthenticated = true;
+      state.isAdmin = action.payload.is_admin;
       state.loading = false;
     },
     fetchUserFailure: (state, action) => {
@@ -44,7 +50,6 @@ const authSlice = createSlice({
       state.user = null;
       state.isAdmin = false;
       state.loading = false;
-      // localStorage.removeItem('scope-key');
     },
     logoutFailure: (state, action) => {
       state.error = action.payload;
@@ -81,6 +86,7 @@ export const {
   registerSuccess,
   registerFailure,
   registerEnd,
+  fetchUserRequest,
   fetchUserSuccess,
   fetchUserFailure,
 } = authSlice.actions;

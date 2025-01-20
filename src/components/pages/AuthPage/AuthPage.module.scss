@@ -132,10 +132,8 @@
   opacity: 0;
   cursor: pointer;
 
-  &:checked + .checkboxLabel {
+  &:checked + .checkboxCheckMark {
     position: absolute;
-    width: 20px;
-    height: 20px;
     cursor: pointer;
 
     &:before {
@@ -167,7 +165,7 @@
   }
 }
 
-.checkboxLabel2 {
+.checkboxFrame {
   position: absolute;
   top: -9px;
   left: 4px;

@@ -34,7 +34,6 @@ const TestForm = ({ testId, initialTestTitle, setInitialTestTitle }) => {
   const [showModal, setShowModal] = useState(false);
   const [modalType, setModalType] = useState(null);
   const [errorsOfValidate, setErrorsOfValidate] = useState(new Set());
-  const [isButtonHidden, setIsButtonHidden] = useState(false);
 
   useEffect(() => {
     if (testId) {
@@ -75,9 +74,6 @@ const TestForm = ({ testId, initialTestTitle, setInitialTestTitle }) => {
 
     if (errorsOfValidate.size) {
       handleShowModal();
-      setTimeout(() => {
-        setIsButtonHidden(false);
-      });
       return false;
     }
 
@@ -133,16 +129,11 @@ const TestForm = ({ testId, initialTestTitle, setInitialTestTitle }) => {
   };
 
   const handleConfirmSave = () => {
-    setIsButtonHidden(true);
     if (!validateForm()) {
       return;
     }
     setModalType('confirm');
     setShowModal(true);
-
-    setTimeout(() => {
-      setIsButtonHidden(false);
-    });
   };
 
   const handleCloseModal = () => {
@@ -237,15 +228,9 @@ const TestForm = ({ testId, initialTestTitle, setInitialTestTitle }) => {
       >
         +
       </button>
-      {!isButtonHidden && (
-        <button
-          type="button"
-          className={s.saveTest}
-          onClick={handleConfirmSave}
-        >
-          Сохранить тест
-        </button>
-      )}
+      <button type="button" className={s.saveTest} onClick={handleConfirmSave}>
+        Сохранить тест
+      </button>
     </form>
   );
 };

@@ -1,10 +1,16 @@
 .header {
-  display: flex;
-  justify-content: end;
+  height: 95px;
   padding: 25px 0;
+
+  @include respondMedium {
+    display: flex;
+    justify-content: end;
+  }
 }
 
 .btn {
+  position: absolute;
+  left: 85vw;
   grid-area: createBtn;
   display: flex;
   align-items: center;
@@ -27,7 +33,13 @@
     border-radius: 12px;
   }
 
+  @include respondLarge {
+    left: 80vw;
+  }
+
   @include respondMedium {
+    position: relative;
+    left: 0;
     padding: 1vh 2vw;
     font-size: 16px;
     border-radius: 10px;

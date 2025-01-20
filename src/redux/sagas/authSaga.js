@@ -3,6 +3,7 @@ import {
   loginRequest,
   loginSuccess,
   loginFailure,
+  fetchUserRequest,
   fetchUserSuccess,
   fetchUserFailure,
   registerRequest,
@@ -14,20 +15,6 @@ import {
 } from '@models/authSlice';
 import api from '@api';
 
-function* loginSaga(action) {
-  try {
-    const response = yield call(api.post, '/signin', action.payload);
-    yield put(loginSuccess(response.data));
-    yield* fetchCurrentUserSaga();
-  } catch (error) {
-    yield put(
-      loginFailure(
-        `Ошибка: ${error.response?.data?.error}` || 'Ошибка авторизации',
-      ),
-    );
-  }
-}
-
 function* fetchCurrentUserSaga() {
   try {
     const response = yield call(api.get, '/users/current');
@@ -37,6 +24,19 @@ function* fetchCurrentUserSaga() {
       fetchUserFailure(
         `Ошибка: ${error.response?.data?.error}` ||
           'Ошибка загрузки пользователя',
+      ),
+    );
+  }
+}
+
+function* loginSaga(action) {
+  try {
+    const response = yield call(api.post, '/signin', action.payload);
+    yield put(loginSuccess(response.data));
+  } catch (error) {
+    yield put(
+      loginFailure(
+        `Ошибка: ${error.response?.data?.error}` || 'Ошибка авторизации',
       ),
     );
   }
@@ -68,6 +68,7 @@ function* registerSaga(action) {
 }
 
 export default function* authSaga() {
+  yield takeLatest(fetchUserRequest.type, fetchCurrentUserSaga);
   yield takeLatest(loginRequest.type, loginSaga);
   yield takeLatest(logoutRequest.type, logoutSaga);
   yield takeLatest(registerRequest.type, registerSaga);

@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import ProtectedRoute from '@utils/ProtectedRoute';
+import IsAuthenticatedRoute from '@utils/IsAuthenticatedRoute';
 import store from './redux/store';
 import AuthPage from '@pages/AuthPage';
 import TestListPage from '@TestListPage';
@@ -15,12 +16,20 @@ import './index.scss';
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <AuthPage />,
+    element: (
+      <IsAuthenticatedRoute>
+        <AuthPage />
+      </IsAuthenticatedRoute>
+    ),
     errorElement: <ErrorPage />,
   },
   {
     path: '/signup',
-    element: <AuthPage />,
+    element: (
+      <IsAuthenticatedRoute>
+        <AuthPage />
+      </IsAuthenticatedRoute>
+    ),
   },
   {
     path: '/registrationSuccess',

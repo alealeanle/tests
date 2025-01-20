@@ -35,7 +35,23 @@ const EditQuestions = ({
 };
 
 EditQuestions.propTypes = {
-  currentQuestions: PropTypes.array.isRequired,
+  currentQuestions: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number,
+      key: PropTypes.string.isRequired,
+      title: PropTypes.string.isRequired,
+      question_type: PropTypes.string.isRequired,
+      answer: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      answers: PropTypes.arrayOf(
+        PropTypes.shape({
+          id: PropTypes.number,
+          key: PropTypes.string.isRequired,
+          text: PropTypes.string.isRequired,
+          is_right: PropTypes.bool.isRequired,
+        }),
+      ),
+    }).isRequired,
+  ).isRequired,
 };
 
 export default EditQuestions;

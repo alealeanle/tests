@@ -1,22 +1,27 @@
 import clsx from 'clsx';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import TestForm from './TestForm';
 import Header from '@commons/Header';
 import Footer from '@commons/Footer';
+import Loading from '@commons/Loading';
 import s from './EditPage.module.scss';
 
 const EditPage = () => {
   const { testId } = useParams();
+  const { loading } = useSelector(state => state.auth);
   const [initialTestTitle, setInitialTestTitle] = useState('');
 
-  return (
+  return loading ? (
+    <Loading />
+  ) : (
     <div className={clsx(s.root, s._container)}>
       <Header />
       <h1 className={s.testTitle}>
         {!testId
           ? 'Создание теста'
-          : `Редактирование теста "${initialTestTitle}"`}
+          : `Редактирование теста "${initialTestTitle === undefined ? 'загрузка названия...' : initialTestTitle}"`}
       </h1>
       <div className={s.testBody}>
         {!testId ? (

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import s from './QuestionComponent.module.scss';
 
 const QuestionComponent = ({ question, answers, onAnswerChange }) => {
@@ -83,6 +84,28 @@ const QuestionComponent = ({ question, answers, onAnswerChange }) => {
     default:
       return null;
   }
+};
+
+QuestionComponent.propTypes = {
+  question: PropTypes.PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    title: PropTypes.string.isRequired,
+    question_type: PropTypes.string.isRequired,
+    answer: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    answers: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        text: PropTypes.string.isRequired,
+        is_right: PropTypes.bool.isRequired,
+      }),
+    ),
+  }).isRequired,
+  answers: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.arrayOf(PropTypes.number),
+    PropTypes.string,
+  ]).isRequired,
+  onAnswerChange: PropTypes.func.isRequired,
 };
 
 export default QuestionComponent;
