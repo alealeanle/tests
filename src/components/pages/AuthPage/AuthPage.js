@@ -54,8 +54,11 @@ const AuthPage = () => {
       setErrors(validationErrors);
       return;
     }
+
+    const { password_confirmation, ...dataToSend } = formData;
+
     dispatch(
-      isRegisterPage ? registerRequest(formData) : loginRequest(formData),
+      isRegisterPage ? registerRequest(formData) : loginRequest(dataToSend),
     );
   };
 
@@ -140,11 +143,8 @@ const AuthPage = () => {
                   checked={formData.is_admin}
                   type="checkbox"
                 />
-                <label
-                  htmlFor="is_admin"
-                  className={s.checkboxCheckMark}
-                ></label>
-                <label htmlFor="is_admin" className={s.checkboxFrame}></label>
+                <label htmlFor="is_admin" className={s.checkboxCheckMark} />
+                <label htmlFor="is_admin" className={s.checkboxFrame} />
               </div>
               <label htmlFor="is_admin" className={s.label}>
                 Администратор
@@ -162,8 +162,8 @@ const AuthPage = () => {
               checked={showPassword}
               type="checkbox"
             />
-            <label htmlFor="show_pass" className={s.checkboxCheckMark}></label>
-            <label htmlFor="show_pass" className={s.checkboxFrame}></label>
+            <label htmlFor="show_pass" className={s.checkboxCheckMark} />
+            <label htmlFor="show_pass" className={s.checkboxFrame} />
           </div>
           <label htmlFor="show_pass" className={s.label}>
             Показать пароль

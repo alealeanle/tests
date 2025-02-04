@@ -11,17 +11,19 @@ export const useTestQuestions = () => {
     ],
   };
 
-  const addQuestion = (questions, setQuestions) => {
-    setQuestions([...questions, questionStructure]);
+  const addQuestion = setQuestions => {
+    setQuestions(prevQuestions => [...prevQuestions, questionStructure]);
   };
 
-  const removeQuestion = (questions, setQuestions, key) => {
-    setQuestions(questions.filter(question => question.key !== key));
+  const removeQuestion = (setQuestions, key) => {
+    setQuestions(prevQuestions =>
+      prevQuestions.filter(question => question.key !== key),
+    );
   };
 
-  const questionChange = (questions, setQuestions, key, field, value) => {
-    setQuestions(
-      questions.map(question =>
+  const questionChange = (setQuestions, key, field, value) => {
+    setQuestions(prevQuestions =>
+      prevQuestions.map(question =>
         question.key === key
           ? {
               ...question,
@@ -47,9 +49,9 @@ export const useTestQuestions = () => {
     );
   };
 
-  const addAnswer = (questions, setQuestions, questionKey) => {
-    setQuestions(
-      questions.map(question =>
+  const addAnswer = (setQuestions, questionKey) => {
+    setQuestions(prevQuestions =>
+      prevQuestions.map(question =>
         question.key === questionKey
           ? {
               ...question,
@@ -63,9 +65,9 @@ export const useTestQuestions = () => {
     );
   };
 
-  const removeAnswer = (questions, setQuestions, questionKey, answerKey) => {
-    setQuestions(
-      questions.map(question =>
+  const removeAnswer = (setQuestions, questionKey, answerKey) => {
+    setQuestions(prevQuestions =>
+      prevQuestions.map(question =>
         question.key === questionKey
           ? {
               ...question,
@@ -78,16 +80,9 @@ export const useTestQuestions = () => {
     );
   };
 
-  const answerChange = (
-    questions,
-    setQuestions,
-    questionKey,
-    answerKey,
-    field,
-    value,
-  ) => {
-    setQuestions(
-      questions.map(question =>
+  const answerChange = (setQuestions, questionKey, answerKey, field, value) => {
+    setQuestions(prevQuestions =>
+      prevQuestions.map(question =>
         question.key === questionKey
           ? {
               ...question,

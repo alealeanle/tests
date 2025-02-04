@@ -56,7 +56,7 @@ const TestListPage = () => {
   }, [dispatch, page, filterText, sortOrder]);
 
   const handleFilterChange = e => {
-    const value = e.target.value;
+    const { value } = e.target;
     setFilterText(value);
     setSearchParams({ search: value, sort: sortOrder, page: 1 });
     setPage(1);
@@ -251,10 +251,10 @@ const TestListPage = () => {
                 </li>
               ))}
               <Modal
-                title={'Подтверждение действия'}
+                title="Подтверждение действия"
                 isOpen={showModal}
                 setIsModalOpen={setShowModal}
-                setOther={closeModal}
+                onCloseCallback={closeModal}
               >
                 <div className={s.modalText}>
                   {modalContent === 'delete'

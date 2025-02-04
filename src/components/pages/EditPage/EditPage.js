@@ -21,7 +21,7 @@ const EditPage = () => {
       <h1 className={s.testTitle}>
         {!testId
           ? 'Создание теста'
-          : `Редактирование теста "${initialTestTitle === undefined ? 'загрузка названия...' : initialTestTitle}"`}
+          : `Редактирование теста "${!initialTestTitle ? 'загрузка названия...' : initialTestTitle}"`}
       </h1>
       <div className={s.testBody}>
         {!testId ? (

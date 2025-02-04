@@ -17,9 +17,14 @@ const QuestionList = ({ questions, setQuestions }) => {
     }, 200);
   }, []);
 
-  const handleRemoveQuestion = (questions, setQuestions, question) => {
+  const handleRemoveQuestion = () => {
     if (!selectedQuestion) return;
-    removeQuestion(questions, setQuestions, question.key);
+    removeQuestion(setQuestions, selectedQuestion.key);
+    setShowDeleteModal(false);
+    resetSelected();
+  };
+
+  const handleCancelDelete = () => {
     setShowDeleteModal(false);
     resetSelected();
   };
@@ -38,10 +43,10 @@ const QuestionList = ({ questions, setQuestions }) => {
       ))}
 
       <Modal
-        title={'Подтверждение действия'}
+        title="Подтверждение действия"
         isOpen={showDeleteModal}
         setIsModalOpen={setShowDeleteModal}
-        setOther={resetSelected}
+        onCloseCallback={resetSelected}
       >
         <div className={s.modalDeleteText}>
           Удалить тест "{selectedQuestion?.title}" ?
@@ -50,20 +55,11 @@ const QuestionList = ({ questions, setQuestions }) => {
           <button
             type="button"
             className={clsx(s.btn, s.modalDeleteBtn)}
-            onClick={() =>
-              handleRemoveQuestion(questions, setQuestions, selectedQuestion)
-            }
+            onClick={handleRemoveQuestion}
           >
             Удалить
           </button>
-          <button
-            type="button"
-            className={s.btn}
-            onClick={() => {
-              setShowDeleteModal(false);
-              resetSelected();
-            }}
-          >
+          <button type="button" className={s.btn} onClick={handleCancelDelete}>
             Отмена
           </button>
         </div>

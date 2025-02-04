@@ -13,9 +13,7 @@ const handlePlaceholder = (options, currentValue) => {
 const EditQuestionForm = ({
   testId,
   question,
-  questions,
   setQuestions,
-  newQuestionsOfEdit,
   setNewQuestionsOfEdit,
   children,
 }) => {
@@ -28,15 +26,9 @@ const EditQuestionForm = ({
 
   const handleFieldChange = (field, value) => {
     if (testId) {
-      questionChange(
-        newQuestionsOfEdit,
-        setNewQuestionsOfEdit,
-        question.key,
-        field,
-        value,
-      );
+      questionChange(setNewQuestionsOfEdit, question.key, field, value);
     } else {
-      questionChange(questions, setQuestions, question.key, field, value);
+      questionChange(setQuestions, question.key, field, value);
     }
   };
 
@@ -45,7 +37,6 @@ const EditQuestionForm = ({
       <div className={s.itemWrap}>
         <h3 className={s.itemTitle}>Вопрос:</h3>
         <textarea
-          type="text"
           className={clsx(s.input, s.question)}
           placeholder="Введите текст вопроса"
           value={question.title}
@@ -87,39 +78,7 @@ EditQuestionForm.propTypes = {
       }),
     ),
   }).isRequired,
-  questions: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number,
-      key: PropTypes.string.isRequired,
-      title: PropTypes.string.isRequired,
-      question_type: PropTypes.string.isRequired,
-      answer: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-      answers: PropTypes.arrayOf(
-        PropTypes.shape({
-          id: PropTypes.number,
-          key: PropTypes.string.isRequired,
-          text: PropTypes.string.isRequired,
-          is_right: PropTypes.bool.isRequired,
-        }),
-      ),
-    }).isRequired,
-  ).isRequired,
   setQuestions: PropTypes.func.isRequired,
-  newQuestionsOfEdit: PropTypes.arrayOf(
-    PropTypes.shape({
-      key: PropTypes.string.isRequired,
-      title: PropTypes.string.isRequired,
-      question_type: PropTypes.string.isRequired,
-      answer: PropTypes.PropTypes.string,
-      answers: PropTypes.arrayOf(
-        PropTypes.shape({
-          key: PropTypes.string.isRequired,
-          text: PropTypes.string.isRequired,
-          is_right: PropTypes.bool.isRequired,
-        }),
-      ),
-    }).isRequired,
-  ),
   setNewQuestionsOfEdit: PropTypes.func,
   children: PropTypes.node.isRequired,
 };

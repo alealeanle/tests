@@ -11,7 +11,6 @@ module.exports = {
       '@models': path.resolve(__dirname, 'src/redux/models'),
       '@sagas': path.resolve(__dirname, 'src/redux/sagas'),
       '@api': path.resolve(__dirname, 'src/api'),
-      '@utils': path.resolve(__dirname, 'src/utils'),
       '@hooks': path.resolve(__dirname, 'src/hooks'),
       '@EditPage': path.resolve(__dirname, 'src/components/pages/EditPage'),
       '@TestListPage': path.resolve(

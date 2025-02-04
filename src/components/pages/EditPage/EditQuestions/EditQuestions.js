@@ -16,9 +16,7 @@ const EditQuestions = ({
       <EditQuestionForm
         testId={testId}
         question={question}
-        questions={questions}
         setQuestions={setQuestions}
-        newQuestionsOfEdit={newQuestionsOfEdit}
         setNewQuestionsOfEdit={setNewQuestionsOfEdit}
       >
         <EditAnswers
