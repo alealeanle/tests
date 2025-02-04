@@ -35,14 +35,14 @@ const EditAnswers = ({
         value,
       );
     } else {
-      questionChange(questions, setQuestions, question.key, field, value);
+      questionChange(setQuestions, question.key, field, value);
     }
   };
 
   const handleRemoveQuestion = () => {
     testId
-      ? removeQuestion(newQuestionsOfEdit, setNewQuestionsOfEdit, question.key)
-      : removeQuestion(questions, setQuestions, question.key);
+      ? removeQuestion(setNewQuestionsOfEdit, question.key)
+      : removeQuestion(setQuestions, question.key);
 
     setShowDeleteModal(false);
     resetDeleteStates();
@@ -51,7 +51,6 @@ const EditAnswers = ({
   const handleAnswerChange = (answer, field, value) => {
     if (testId) {
       answerChange(
-        newQuestionsOfEdit,
         setNewQuestionsOfEdit,
         question.key,
         answer.key,
@@ -59,32 +58,20 @@ const EditAnswers = ({
         value,
       );
     } else {
-      answerChange(
-        questions,
-        setQuestions,
-        question.key,
-        answer.key,
-        field,
-        value,
-      );
+      answerChange(setQuestions, question.key, answer.key, field, value);
     }
   };
 
   const handleAddAnswer = () => {
     testId
-      ? addAnswer(newQuestionsOfEdit, setNewQuestionsOfEdit, question.key)
-      : addAnswer(questions, setQuestions, question.key);
+      ? addAnswer(setNewQuestionsOfEdit, question.key)
+      : addAnswer(setQuestions, question.key);
   };
 
   const handleRemoveAnswer = () => {
     testId
-      ? removeAnswer(
-          newQuestionsOfEdit,
-          setNewQuestionsOfEdit,
-          question.key,
-          deletedItem.key,
-        )
-      : removeAnswer(questions, setQuestions, question.key, deletedItem.key);
+      ? removeAnswer(setNewQuestionsOfEdit, question.key, deletedItem.key)
+      : removeAnswer(setQuestions, question.key, deletedItem.key);
 
     setShowDeleteModal(false);
     resetDeleteStates();
@@ -128,7 +115,7 @@ const EditAnswers = ({
           title={'Подтверждение действия'}
           isOpen={showDeleteModal}
           setIsModalOpen={setShowDeleteModal}
-          setOther={resetDeleteStates}
+          onCloseCallback={resetDeleteStates}
         >
           <div className={s.modalDeleteText}>
             Удалить вопрос{' '}
@@ -233,7 +220,7 @@ const EditAnswers = ({
           title={'Подтверждение действия'}
           isOpen={showDeleteModal}
           setIsModalOpen={setShowDeleteModal}
-          setOther={resetDeleteStates}
+          onCloseCallback={resetDeleteStates}
         >
           <div className={s.modalDeleteText}>
             {deleteType === 'question'

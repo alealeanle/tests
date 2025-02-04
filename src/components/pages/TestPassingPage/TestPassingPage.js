@@ -44,25 +44,37 @@ const TestPassingPage = () => {
     let rightAnswers = 0;
 
     test.questions.forEach(question => {
-      if (question.question_type === 'single') {
-        const rightOption = question.answers.find(answer => answer.is_right);
-        if (rightOption && rightOption.id === answers[question.id]) {
-          rightAnswers++;
+      switch (question.question_type) {
+        case 'single': {
+          const rightOption = question.answers.find(answer => answer.is_right);
+          if (rightOption && rightOption.id === answers[question.id]) {
+            rightAnswers++;
+          }
+          break;
         }
-      } else if (question.question_type === 'multiple') {
-        const rightOptions = question.answers
-          .filter(answer => answer.is_right)
-          .map(answer => answer.id);
-        if (
-          rightOptions.length === answers[question.id]?.length &&
-          rightOptions.every(id => answers[question.id].includes(id))
-        ) {
-          rightAnswers++;
+
+        case 'multiple': {
+          const rightOptions = question.answers
+            .filter(answer => answer.is_right)
+            .map(answer => answer.id);
+          if (
+            rightOptions.length === answers[question.id]?.length &&
+            rightOptions.every(id => answers[question.id].includes(id))
+          ) {
+            rightAnswers++;
+          }
+          break;
         }
-      } else if (question.question_type === 'number') {
-        if (question.answer === Number(answers[question.id])) {
-          rightAnswers++;
+
+        case 'number': {
+          if (question.answer === Number(answers[question.id])) {
+            rightAnswers++;
+          }
+          break;
         }
+
+        default:
+          break;
       }
     });
 
@@ -105,7 +117,7 @@ const TestPassingPage = () => {
             <div>Вопросы отсутствуют.</div>
           )}
           <Modal
-            title={'Результат'}
+            title="Результат"
             isOpen={showModal}
             setIsModalOpen={setShowModal}
           >

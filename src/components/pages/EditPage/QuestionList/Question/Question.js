@@ -25,11 +25,16 @@ const Question = ({
 
   const handleEditQuestion = useCallback(
     question => {
-      setEditingQuestionKey([...editingQuestionKey, question.key]);
-      setShowAnswersForQuestion([...showAnswersForQuestion, question.key]);
+      setEditingQuestionKey(prevState => [...prevState, question.key]);
+      setShowAnswersForQuestion(prevState => [...prevState, question.key]);
     },
     [editingQuestionKey, showAnswersForQuestion],
   );
+
+  const handleDeleteQuestion = question => {
+    setSelectedQuestion(question);
+    setShowDeleteModal(true);
+  };
 
   return (
     <li className={s.question}>
@@ -40,15 +45,12 @@ const Question = ({
               type="button"
               className={clsx(s.itemBtn, 'icon-edit')}
               onClick={() => handleEditQuestion(question)}
-            ></button>
+            />
             <button
               type="button"
               className={clsx(s.itemBtn, 'icon-delete')}
-              onClick={() => {
-                setSelectedQuestion(question);
-                setShowDeleteModal(true);
-              }}
-            ></button>
+              onClick={() => handleDeleteQuestion(question)}
+            />
             <div
               id="questionText"
               className={s.questionTextWrap}

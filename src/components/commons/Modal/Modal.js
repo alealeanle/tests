@@ -4,7 +4,13 @@ import useEscapeKey from '@hooks/useEscapeKey';
 import ModalFade from './ModalFade';
 import s from './Modal.module.scss';
 
-const Modal = ({ title, children, isOpen, setIsModalOpen, setOther }) => {
+const Modal = ({
+  title,
+  children,
+  isOpen,
+  setIsModalOpen,
+  onCloseCallback,
+}) => {
   useEffect(() => {
     if (isOpen) {
       document.body.classList.add('modalOpen');
@@ -19,8 +25,8 @@ const Modal = ({ title, children, isOpen, setIsModalOpen, setOther }) => {
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
-    if (setOther) {
-      setOther();
+    if (onCloseCallback) {
+      onCloseCallback();
     }
   };
 

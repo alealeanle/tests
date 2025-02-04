@@ -54,13 +54,9 @@ const testsSlice = createSlice({
       state.error = null;
     },
     editTestSuccess: (state, action) => {
-      const index = state.tests.findIndex(
-        test => test.id === action.payload.id,
+      state.tests = state.tests.map(test =>
+        test.id === action.payload.id ? { ...test, ...action.payload } : test,
       );
-      if (index !== -1) {
-        state.tests[index] = { ...state.tests[index], ...action.payload };
-      }
-      state.loading = false;
     },
     editTestFailure: (state, action) => {
       state.loading = false;

@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
+import { v4 as uuidv4 } from 'uuid';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -27,7 +28,17 @@ const TestForm = ({ testId, initialTestTitle, setInitialTestTitle }) => {
 
   const { test, loading } = useSelector(state => state.tests);
   const [newTestTitle, setNewTestTitle] = useState('');
-  const [questions, setQuestions] = useState([questionStructure]);
+  const [questions, setQuestions] = useState([
+    {
+      key: uuidv4(),
+      title: '',
+      question_type: 'single',
+      answers: [
+        { key: uuidv4(), text: '', is_right: false },
+        { key: uuidv4(), text: '', is_right: false },
+      ],
+    },
+  ]);
   const [newQuestionsOfEdit, setNewQuestionsOfEdit] = useState([]);
   const currentQuestions = !testId ? questions : newQuestionsOfEdit;
   const [initialQuestions, setInitialQuestions] = useState([]);
@@ -57,9 +68,9 @@ const TestForm = ({ testId, initialTestTitle, setInitialTestTitle }) => {
 
   const handleAddQuestion = () => {
     if (!testId) {
-      addQuestion(questions, setQuestions);
+      addQuestion(setQuestions);
     } else {
-      addQuestion(newQuestionsOfEdit, setNewQuestionsOfEdit);
+      addQuestion(setNewQuestionsOfEdit);
     }
   };
 
@@ -143,6 +154,16 @@ const TestForm = ({ testId, initialTestTitle, setInitialTestTitle }) => {
     }, 300);
   };
 
+  const handleConfirmOrCloseModal = e => {
+    if (modalType === 'error') {
+      handleCloseModal();
+      handleResetErrors();
+    } else if (modalType === 'confirm') {
+      handleCloseModal();
+      handleSave(e);
+    }
+  };
+
   return loading ? (
     <Loading />
   ) : (
@@ -176,7 +197,7 @@ const TestForm = ({ testId, initialTestTitle, setInitialTestTitle }) => {
         title={modalType === 'error' ? 'Ошибка!' : 'Подтверждение'}
         isOpen={showModal}
         setIsModalOpen={setShowModal}
-        setOther={handleResetErrors}
+        onCloseCallback={handleResetErrors}
       >
         {modalType === 'error' ? (
           <ul className={s.errors}>
@@ -196,15 +217,7 @@ const TestForm = ({ testId, initialTestTitle, setInitialTestTitle }) => {
         <div className={s.btnsWrap}>
           <button
             type="button"
-            onClick={e => {
-              if (modalType === 'error') {
-                handleCloseModal();
-                handleResetErrors();
-              } else if (modalType === 'confirm') {
-                handleCloseModal();
-                handleSave(e);
-              }
-            }}
+            onClick={handleConfirmOrCloseModal}
             className={clsx(s.saveTest, s.btn)}
           >
             {modalType === 'error' ? 'OK' : 'Сохранить'}
